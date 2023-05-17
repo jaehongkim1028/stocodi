@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Like extends BaseTimeEntity {
+public class LikeNumber extends BaseTimeEntity {
     @Id
     @Column(name = "EMAIL")
     private String email;
@@ -20,7 +20,7 @@ public class Like extends BaseTimeEntity {
 
     // Builder를 통한 초기화
     @Builder
-    public Like(String email, Long contentId) {
+    public LikeNumber(String email, Long contentId) {
         this.contentId = contentId;
         this.email = email;
     }
