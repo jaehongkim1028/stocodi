@@ -4,14 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Builder
+@Entity
 public class Portfolio extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +27,7 @@ public class Portfolio extends BaseTimeEntity {
     private Integer totalAsset;
 
     @Builder
-    public Portfolio(Long portfolioId, String email, Integer initialCash, Integer currentCash, Integer totalAsset) {
-        this.portfolioId = portfolioId;
+    public Portfolio(String email, Integer initialCash, Integer currentCash, Integer totalAsset) {
         this.email = email;
         this.initialCash = initialCash;
         this.currentCash = currentCash;
