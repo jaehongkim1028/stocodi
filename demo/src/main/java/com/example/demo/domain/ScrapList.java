@@ -22,8 +22,7 @@ public class ScrapList extends BaseTimeEntity {
 
     // Builder를 통한 초기화
     @Builder
-    public ScrapList(Long scrapId, String email, Long contentId) {
-        this.scrapId = scrapId;
+    public ScrapList(String email, Long contentId) {
         this.contentId = contentId;
         this.email = email;
     }

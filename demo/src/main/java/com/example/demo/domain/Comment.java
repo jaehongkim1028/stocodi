@@ -26,10 +26,9 @@ public class Comment extends BaseTimeEntity {
 
     // Builder를 통한 초기화
     @Builder
-    public Comment(Long commentId, String email, Long contentId, String commentContent) {
-        this.commentId = commentId;
-        this.contentId = contentId;
+    public Comment(String email, Long contentId, String commentContent) {
         this.email = email;
+        this.contentId = contentId;
         this.commentContent = commentContent;
     }
 }

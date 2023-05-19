@@ -16,7 +16,7 @@ public class Reservation extends BaseTimeEntity {
     private Long reservationId;
 
     @Column(name = "PORTFOLIO_ID")
-    private String portfolioId;
+    private Long portfolioId;
 
     @Column(nullable = false)
     private Integer targetPrice;
@@ -25,7 +25,7 @@ public class Reservation extends BaseTimeEntity {
     private Integer transactionCount;
 
     @Builder
-    public Reservation(String portfolioId, Integer targetPrice, Integer transactionCount) {
+    public Reservation(Long portfolioId, Integer targetPrice, Integer transactionCount) {
         this.portfolioId = portfolioId;
         this.targetPrice = targetPrice;
         this.transactionCount = transactionCount;

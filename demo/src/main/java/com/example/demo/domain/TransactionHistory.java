@@ -15,10 +15,10 @@ public class TransactionHistory extends BaseTimeEntity {
     private Long transactionHistoryId;
 
     @Column(name = "PORTFOLIO_ID")
-    private String portfolioId;
+    private Long portfolioId;
 
     @Column(name = "STOCK_ID")
-    private String stockId;
+    private Long stockId;
 
     @Column(nullable = false)
     private Integer transactionCount;
@@ -30,7 +30,7 @@ public class TransactionHistory extends BaseTimeEntity {
     private Boolean isBuy;
 
     @Builder
-    public TransactionHistory(String portfolioId, String stockId, Integer transactionCount, Integer executionPrice, Boolean isBuy) {
+    public TransactionHistory(Long portfolioId, Long stockId, Integer transactionCount, Integer executionPrice, Boolean isBuy) {
         this.portfolioId = portfolioId;
         this.stockId = stockId;
         this.transactionCount = transactionCount;

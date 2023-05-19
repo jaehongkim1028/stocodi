@@ -15,14 +15,14 @@ public class InterestedItem extends BaseTimeEntity {
     private Long interestedItemId;
 
     @Column(name = "STOCK_ID")
-    private String stockId;
+    private Long stockId;
 
     @Column(name = "PORTFOLIO_ID")
     private Long portfolioId;
 
     // Builder를 통한 초기화
     @Builder
-    public InterestedItem(String stockId, Long portfolioId) {
+    public InterestedItem(Long stockId, Long portfolioId) {
         this.stockId = stockId;
         this.portfolioId = portfolioId;
     }

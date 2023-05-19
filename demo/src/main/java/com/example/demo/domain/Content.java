@@ -32,8 +32,7 @@ public class Content extends BaseTimeEntity {
 
     // Builder를 통한 초기화
     @Builder
-    public Content(Long contentId, String email, String title, Integer likeCount, Integer scrapCount, String storePlace) {
-        this.contentId = contentId;
+    public Content(String email, String title, Integer likeCount, Integer scrapCount, String storePlace) {
         this.email = email;
         this.title = title;
         this.likeCount = likeCount;
