@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import org.springframework.http.ResponseEntity;
 import com.example.demo.controller.LikeRequest;
+import com.example.demo.domain.HttpResponseEntity.ResponseResult;
 import com.example.demo.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

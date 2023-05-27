@@ -1,6 +1,6 @@
 package com.example.demo.domain;
 
-public class Like {
+public class LikeNumber {
     public String UserID;
     public String ContentID;
 
