@@ -4,6 +4,7 @@ import com.example.demo.domain.User;
 import com.example.demo.dto.UserLoginDto;
 import com.example.demo.dto.UserRegisterDto;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,10 @@ public class UserService {
     @Autowired
     private EncryptionService encryptionService;
 
-    public User register(UserRegisterDto userDto) {
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    public String register(UserRegisterDto userDto) {
         String encodedPassword = encryptionService.encode(userDto.getPwd());
 
         User user = User.builder()
@@ -27,14 +31,15 @@ public class UserService {
                 .phone(userDto.getPhone())
                 .build();
 
-        return userRepository.save(user);
+        userRepository.save(user);
+        return jwtUtil.generateToken(userDto.getEmail());
     }
 
-    public User login(UserLoginDto loginDto) {
+    public String login(UserLoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.getEmail());
 
         if (user != null && encryptionService.match(loginDto.getPwd(), user.getPwd())) {
-            return user;
+            return jwtUtil.generateToken(user.getEmail());
         }
         return null;
     }

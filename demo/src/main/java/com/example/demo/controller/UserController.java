@@ -1,15 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.User;
 import com.example.demo.dto.UserLoginDto;
 import com.example.demo.dto.UserRegisterDto;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -18,17 +16,30 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody UserRegisterDto userDto) {
-        return ResponseEntity.ok(userService.register(userDto));
+    public ResponseEntity<String> registerUser(@RequestBody UserRegisterDto userDto) {
+        String token = userService.register(userDto);
+        if (token != null) {
+            return ResponseEntity.ok(token);
+        } else {
+            return ResponseEntity.badRequest().body("Registration failed");
+        }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody UserLoginDto loginDto) {
-        User user = userService.login(loginDto);
-        if (user != null) {
-            return ResponseEntity.ok(user);
+    public ResponseEntity<String> loginUser(@RequestBody UserLoginDto loginDto) {
+        String token = userService.login(loginDto);
+        if (token != null) {
+            return ResponseEntity.ok(token);
         } else {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(401).body("Login failed");
         }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<String> currentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+
+        return ResponseEntity.ok(currentUserName);
     }
 }
