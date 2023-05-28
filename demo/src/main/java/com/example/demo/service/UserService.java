@@ -12,21 +12,28 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EncryptionService encryptionService;
+
     public User register(UserRegisterDto userDto) {
+        String encodedPassword = encryptionService.encode(userDto.getPwd());
+
         User user = User.builder()
                 .email(userDto.getEmail())
                 .name(userDto.getName())
-                .pwd(userDto.getPwd()) // Remember to hash the password before storing it
+                .pwd(encodedPassword) // Password is now hashed
                 .isAdmin(userDto.getIsAdmin())
                 .age(userDto.getAge())
                 .phone(userDto.getPhone())
                 .build();
+
         return userRepository.save(user);
     }
 
     public User login(UserLoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.getEmail());
-        if (user != null && user.getPwd().equals(loginDto.getPwd())) { // Check the password correctly (hash comparison)
+
+        if (user != null && encryptionService.match(loginDto.getPwd(), user.getPwd())) {
             return user;
         }
         return null;
