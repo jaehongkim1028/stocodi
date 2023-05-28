@@ -10,14 +10,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private EncryptionService encryptionService;
-
-    @Autowired
     private JwtUtil jwtUtil;
+
+    public UserService(UserRepository userRepository, EncryptionService encryptionService, JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.encryptionService = encryptionService;
+        this.jwtUtil = jwtUtil;
+    }
 
     public String register(UserRegisterDto userDto) {
         String encodedPassword = encryptionService.encode(userDto.getPwd());
