@@ -9,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -16,7 +18,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserRegisterDto userDto) {
+    public ResponseEntity<String> registerUser(@Valid @RequestBody UserRegisterDto userDto) {
         String token = userService.register(userDto);
         if (token != null) {
             return ResponseEntity.ok(token);
@@ -26,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody UserLoginDto loginDto) {
+    public ResponseEntity<String> loginUser(@Valid @RequestBody UserLoginDto loginDto) {
         String token = userService.login(loginDto);
         if (token != null) {
             return ResponseEntity.ok(token);
