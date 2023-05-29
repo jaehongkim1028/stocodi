@@ -1,10 +1,26 @@
 package com.example.demo.domain;
 
-public class LikeNumber {
-    public String UserID;
-    public String ContentID;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-    public static void DoListUp(){
+import javax.persistence.*;
 
+@Getter
+@NoArgsConstructor
+@Entity
+public class LikeNumber extends BaseTimeEntity {
+    @Id
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "CONTENT_ID")
+    private Long contentId;
+
+    // Builder를 통한 초기화
+    @Builder
+    public LikeNumber(String email, Long contentId) {
+        this.contentId = contentId;
+        this.email = email;
     }
 }

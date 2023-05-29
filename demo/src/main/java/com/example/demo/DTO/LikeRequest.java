@@ -1,4 +1,8 @@
-package com.example.demo.controller;
+package com.example.demo.DTO;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

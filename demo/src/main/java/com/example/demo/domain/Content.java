@@ -34,6 +34,9 @@ public class Content extends BaseTimeEntity {
     @Column(length = 32, nullable = false)
     private String title;
 
+    @Column(length = 128, nullable = false)
+    private String detail;
+
     @Column(nullable = false)
     private Integer likeCount;
 
@@ -45,19 +48,17 @@ public class Content extends BaseTimeEntity {
 
     // Builder를 통한 초기화
     @Builder
-    public Content(String email, Set<Integer> hashtags, String videoID, String writer, String title, Integer likeCount, Integer scrapCount, String storePlace) {
+    public Content(String email, Set<Integer> hashtags, String videoID, String writer, String title, String detail, Integer likeCount, Integer scrapCount, String storePlace) {
         this.email = email;
         this.hashtags = hashtags;
         this.videoID = videoID;
         this.writer = writer;
+        this.detail = detail;
         this.title = title;
         this.likeCount = likeCount;
         this.scrapCount = scrapCount;
         this.storePlace = storePlace;
     }
 
-    // update를 통한 수정
-    public void update() {
-    }
 
 }

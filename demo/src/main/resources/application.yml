@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test # 네트워크 연결 링크
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none # 애플리케이션 실행 시점에 테이블 drop, 다시 생성
+    properties:
+      hibernate:
+        format-sql: true # 로그로 출력되는 SQL문을 보기쉽게 해준다.
