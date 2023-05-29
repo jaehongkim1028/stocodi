@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,12 +21,15 @@ public class UserRegisterDto {
     @Size(min = 8)
     private String pwd;
 
-    @NotNull
-    private Boolean isAdmin;
-
     @NotEmpty
     private String age;
 
     @NotEmpty
     private String phone;
+
+    @NotEmpty
+    private String nickname;
+
+    @NotEmpty
+    private List<Integer> interest;
 }

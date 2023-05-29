@@ -8,6 +8,8 @@ import com.example.demo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private UserRepository userRepository;
@@ -27,9 +29,10 @@ public class UserService {
                 .email(userDto.getEmail())
                 .name(userDto.getName())
                 .pwd(encodedPassword) // Password is now hashed
-                .isAdmin(userDto.getIsAdmin())
                 .age(userDto.getAge())
                 .phone(userDto.getPhone())
+                .nickname(userDto.getNickname())
+                .interest(userDto.getInterest())
                 .build();
 
         userRepository.save(user);
@@ -43,5 +46,9 @@ public class UserService {
             return jwtUtil.generateToken(user.getEmail());
         }
         return null;
+    }
+
+    public List<Integer> getUserListByEmail(String email) {
+        return userRepository.findByEmail(email).getInterest();
     }
 }

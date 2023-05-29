@@ -44,7 +44,7 @@ public class UserController {
     public ResponseEntity<String> currentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
-
+        System.out.println(userService.getUserListByEmail(currentUserName));
         return ResponseEntity.ok(currentUserName);
     }
 }
