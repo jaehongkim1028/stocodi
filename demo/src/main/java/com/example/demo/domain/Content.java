@@ -23,7 +23,7 @@ public class Content extends BaseTimeEntity {
     @ElementCollection
     @CollectionTable(name = "HashTags", joinColumns = @JoinColumn(name = "CONTENT_ID"))
     @Column(name = "hashtag")
-    private Set<String> hashtags = new HashSet<>();
+    private Set<Integer> hashtags = new HashSet<>();
 
     @Column(name = "videoID")
     private String videoID;
@@ -45,7 +45,7 @@ public class Content extends BaseTimeEntity {
 
     // Builder를 통한 초기화
     @Builder
-    public Content(String email, Set<String> hashtags, String videoID, String writer, String title, Integer likeCount, Integer scrapCount, String storePlace) {
+    public Content(String email, Set<Integer> hashtags, String videoID, String writer, String title, Integer likeCount, Integer scrapCount, String storePlace) {
         this.email = email;
         this.hashtags = hashtags;
         this.videoID = videoID;
