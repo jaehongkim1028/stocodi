@@ -1,11 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.Portfolio;
-import com.example.demo.sevice.PortfolioService;
+import com.example.demo.service.PortfolioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -51,4 +52,9 @@ public class PortforlioController {
 
     }
 
+    // 삭제
+    @GetMapping("/articles/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        portfolioService.delete(id);
+        return "redirect:/"; }
 }

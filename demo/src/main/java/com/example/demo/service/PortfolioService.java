@@ -1,4 +1,4 @@
-package com.example.demo.sevice;
+package com.example.demo.service;
 
 import com.example.demo.domain.Portfolio;
 import com.example.demo.repository.PortfolioRepository;
@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sound.sampled.Port;
 import java.util.List;
 
 @Service
@@ -31,5 +30,17 @@ public class PortfolioService {
         return portfolioRepository.findAll();
     }
 
+    // Portfolio Update
+    public Long update(Long id, Portfolio portfolio) {
+        Portfolio originalPofol = portfolioRepository.findById(id).get(); // from optional
+        originalPofol.setPortfolioName(portfolio.getPortfolioName());
+        portfolioRepository.save(originalPofol);
+        return portfolio.getPortfolioId();
+    }
+
+    // Delete
+    public void delete(Long id) {
+        portfolioRepository.delete(id);
+    }
 
 }

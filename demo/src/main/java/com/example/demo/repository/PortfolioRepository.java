@@ -8,7 +8,11 @@ import java.util.Optional;
 
 public interface PortfolioRepository {
 
+    // 생성
     Portfolio save(Portfolio portfolio);
+
+    // 조회
+    void delete(Long id);
 
     Optional<Portfolio> findById(Long portfolioId);
     Optional<Portfolio> findByName(String portfolioName);

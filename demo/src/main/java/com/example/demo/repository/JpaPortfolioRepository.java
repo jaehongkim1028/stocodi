@@ -4,6 +4,7 @@ import com.example.demo.domain.Portfolio;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,13 @@ public class JpaPortfolioRepository implements PortfolioRepository{
     public Portfolio save(Portfolio portfolio) {
         em.persist(portfolio);
         return portfolio;
+    }
+
+    @Override
+    public void delete(Long id) {
+        Portfolio portfolio = findById(id).orElseThrow(() -> new EntityNotFoundException("Article not found"));
+        //optional null , throw
+        em.remove(portfolio);
     }
 
     @Override
