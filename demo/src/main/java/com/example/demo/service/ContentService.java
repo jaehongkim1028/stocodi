@@ -13,25 +13,25 @@ import java.util.Optional;
 @Service
 public class ContentService {
     private final ContentRepository contentRepository;
+
     @Autowired
-    public ContentService(ContentRepository contentRepository) {
+    public ContentService(ContentRepository contentRepository){
         this.contentRepository = contentRepository;
     }
 
+    // 글 생설
     public Long create(Content content) {
         contentRepository.save(content);
         return content.getContentId();
     }
 
+    // 조회 (전체 글)
     public List<Content> findContents() {
         return contentRepository.findAll();
     }
 
+    // ( - )
     public Optional<Content> findOne(Long contentId) {
         return contentRepository.findById(contentId);
-    }
-
-    public Optional<Content> findByTitle(String contentTitle) {
-        return contentRepository.findByTitle(contentTitle);
     }
 }

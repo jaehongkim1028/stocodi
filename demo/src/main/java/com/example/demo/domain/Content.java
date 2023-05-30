@@ -1,64 +1,76 @@
 package com.example.demo.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import java.util.Set;
-import java.util.HashSet;
 
-@Getter
-@NoArgsConstructor
 @Entity
-public class Content extends BaseTimeEntity {
+@Table (name = "Content")
+public class Content {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CONTENT_ID")
-    private Long contentId;
-
-    @Column(name = "EMAIL", length = 500, nullable = false)
+    private Long contentID;
     private String email;
-
-    @ElementCollection
-    @CollectionTable(name = "HashTags", joinColumns = @JoinColumn(name = "CONTENT_ID"))
-    @Column(name = "hashtag")
-    private Set<Integer> hashtags = new HashSet<>();
-
-    @Column(name = "videoID")
-    private String videoID;
-
-    @Column(name = "writer")
-    private String writer;
-
-    @Column(length = 32, nullable = false)
     private String title;
-
-    @Column(length = 128, nullable = false)
-    private String detail;
-
-    @Column(nullable = false)
     private Integer likeCount;
-
-    @Column(nullable = false)
     private Integer scrapCount;
-
-    @Column(length = 500, nullable = false)
     private String storePlace;
 
-    // Builder를 통한 초기화
-    @Builder
-    public Content(String email, Set<Integer> hashtags, String videoID, String writer, String title, String detail, Integer likeCount, Integer scrapCount, String storePlace) {
+    public Content(Long contentID, String email, String title, Integer likeCount, Integer scrapCount, String storePlace) {
+        this.contentID = contentID;
         this.email = email;
-        this.hashtags = hashtags;
-        this.videoID = videoID;
-        this.writer = writer;
-        this.detail = detail;
         this.title = title;
         this.likeCount = likeCount;
         this.scrapCount = scrapCount;
         this.storePlace = storePlace;
     }
 
+    public Content() { }
 
+    public Long getContentId() {
+        return contentID;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+
+    public Integer getScrapCount() {
+        return scrapCount;
+    }
+
+    public String getStorePlace() {
+        return storePlace;
+    }
+
+    public void setContentID(Long contentID) {
+        this.contentID = contentID;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public void setScrapCount(Integer scrapCount) {
+        this.scrapCount = scrapCount;
+    }
+
+    public void setStorePlace(String storePlace) {
+        this.storePlace = storePlace;
+    }
 }
