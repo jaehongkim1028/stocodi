@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ContentController {
@@ -44,11 +46,42 @@ public class ContentController {
         return "redirect:/";
     }
 
-    @GetMapping("/articles")
+    @GetMapping("/contents")
     public String list(Model model){
         List<Content> contents = contentService.findContents();
         model.addAttribute("contents", contents);
 
         return "contents/contentList";
+    }
+
+    // Content 상세 페이지
+    @GetMapping("/contents/{ContentId}")
+    public String detail(@PathVariable Long contentId, Model model){
+        Optional<Content> content = contentService.findOne(contentId);
+        model.addAttribute("content", content.orElse(null));
+        return "contents/contentDetail";
+    }
+
+    // 상세 페이지에서 Content 수정
+    @GetMapping("/Contents/update/{contentId}")
+    public String updateForm(@PathVariable Long contentId, Model model){
+        Content content = contentService.findOne(contentId).get();
+        model.addAttribute("content", content);
+
+        return "contents/updateContent";
+    }
+
+    @PostMapping("/contents/update/{contentId}")
+    public String update(@PathVariable Long contentId, Content newContent){
+        contentService.update(contentId, newContent);
+
+        return "redirect:/contents";
+    }
+
+    @GetMapping("/contents/delete/{contentId}")
+    public String delete(@PathVariable long contentId){
+        contentService.delete(contentId);
+
+        return "redirect:/contents";
     }
 }

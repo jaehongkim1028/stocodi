@@ -10,4 +10,6 @@ public interface ContentRepository {
 
     Optional<Content> findById(Long contentId);
     List<Content> findAll();
+
+    void delete(Long contentId);
 }

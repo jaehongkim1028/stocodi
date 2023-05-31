@@ -4,6 +4,7 @@ import com.example.demo.domain.Content;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,5 +33,11 @@ public class JpaContentRepository implements ContentRepository{
     public List<Content> findAll() {
         return em.createQuery("select a from Content a", Content.class)
                 .getResultList();
+    }
+
+    @Override
+    public void delete(Long contentId){
+        Content content = findById(contentId).orElseThrow(()
+                -> new EntityNotFoundException("Content not found"));
     }
 }
