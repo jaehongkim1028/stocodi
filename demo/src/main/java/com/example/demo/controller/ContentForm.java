@@ -5,8 +5,12 @@ public class ContentForm {
     private String email;
     private String title;
     private Integer likeCount;
-    private Integer scrapCount;
-    private String storePlace;
+    private String videoLink;
+    private String writer;
+    private String content;
+    private Integer hashtag;
+    //private Integer scrapCount;
+    //private String storePlace;
 
     public Long getContentID() {
         return contentID;
@@ -40,19 +44,51 @@ public class ContentForm {
         this.likeCount = likeCount;
     }
 
-    public Integer getScrapCount() {
-        return scrapCount;
+    public String getVideoLink() {
+        return videoLink;
     }
 
-    public void setScrapCount(Integer scrapCount) {
-        this.scrapCount = scrapCount;
+    public void setVideoLink(String videoLink) {
+        this.videoLink = videoLink;
     }
 
-    public String getStorePlace() {
-        return storePlace;
+    public String getWriter() {
+        return writer;
     }
 
-    public void setStorePlace(String storePlace) {
-        this.storePlace = storePlace;
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getHashtag() {
+        return hashtag;
+    }
+
+    public void setHashtag(Integer hashtag) {
+        this.hashtag = hashtag;
+    }
+
+    //    public Integer getScrapCount() {
+//        return scrapCount;
+//    }
+//
+//    public void setScrapCount(Integer scrapCount) {
+//        this.scrapCount = scrapCount;
+//    }
+//
+//    public String getStorePlace() {
+//        return storePlace;
+//    }
+//
+//    public void setStorePlace(String storePlace) {
+//        this.storePlace = storePlace;
+//    }
 }

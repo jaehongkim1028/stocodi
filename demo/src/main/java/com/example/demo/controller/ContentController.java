@@ -31,7 +31,11 @@ public class ContentController {
         //content.setContentID();
         //content.setEmail();
         content.setTitle(form.getTitle());
-        //content.setLikeCount();
+        content.setContent(form.getContent());
+        content.setHashtag(form.getHashtag());
+        content.setWriter(form.getWriter());
+        content.setVideoLink(form.getVideoLink());
+        content.setLikeCount(0);
         //content.setScrapCount();
         //content.setStorePlace();
 
