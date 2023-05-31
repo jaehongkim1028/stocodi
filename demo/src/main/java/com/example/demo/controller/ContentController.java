@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.Content;
+import com.example.demo.domain.LikeNumber;
 import com.example.demo.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,7 +63,7 @@ public class ContentController {
         return "contents/contentDetail";
     }
 
-    // 상세 페이지에서 Content 수정
+    // Content 수정
     @GetMapping("/Contents/update/{contentId}")
     public String updateForm(@PathVariable Long contentId, Model model){
         Content content = contentService.findOne(contentId).get();
@@ -78,6 +79,7 @@ public class ContentController {
         return "redirect:/contents";
     }
 
+    // Content 삭제
     @GetMapping("/contents/delete/{contentId}")
     public String delete(@PathVariable long contentId){
         contentService.delete(contentId);
