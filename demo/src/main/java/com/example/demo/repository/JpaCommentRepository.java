@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class JpaCommentRepository implements CommentRepository{
+public class JpaCommentRepository implements CommentRepository {
 
     private final EntityManager em;
 
@@ -18,7 +18,7 @@ public class JpaCommentRepository implements CommentRepository{
     }
 
     @Override
-    public Comment save(Comment comment){
+    public Comment save(Comment comment) {
         em.persist(comment);
         return comment;
     }
@@ -26,7 +26,7 @@ public class JpaCommentRepository implements CommentRepository{
     @Override
     public List<Comment> findByContentId(Long contentId) {
         return em.createQuery("select a from Comment a" +
-                "where a.contentId = :contentId", Comment.class)
+                        "where a.contentId = :contentId", Comment.class)
                 .getResultList();
     }
 
@@ -39,7 +39,7 @@ public class JpaCommentRepository implements CommentRepository{
     @Override
     public void delete(Long commentId) {
         Comment comment = findByCommentId(commentId).orElseThrow(()
-        ->new EntityNotFoundException("Comment NotFoung"));
+                -> new EntityNotFoundException("Comment NotFoung"));
 
         em.remove(comment);
     }

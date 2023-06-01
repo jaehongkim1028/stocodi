@@ -14,23 +14,35 @@ public class LikeNumberService {
     private final LikeNumberRepository likeNumberRepository;
 
     @Autowired
-    public LikeNumberService(LikeNumberRepository likeNumberRepository){
+    public LikeNumberService(LikeNumberRepository likeNumberRepository) {
         this.likeNumberRepository = likeNumberRepository;
     }
 
     //좋아요 생성
-    public Long create(LikeNumber likeNumber){
+    public Long create(LikeNumber likeNumber) {
         likeNumberRepository.save(likeNumber);
 
         return likeNumber.getLikeNumberId();
     }
 
-    // 조건에 맞는 아이디를 통해 해당 게시글에 좋아요를 누른 적이 있는지
-    public Optional<LikeNumber> findOne(String email, Long ContentId){
-        return likeNumberRepository.findByEmailAndContentId(email, ContentId);
+    // 조건에 맞는 아이디로 해당 게시글에 누른 좋아요 검색
+    public Optional<LikeNumber> findOne(String email, Long contentId) {
+        return likeNumberRepository.findByEmailAndContentId(email, contentId);
     }
 
-    public void delete(String email, Long contentId){
-        likeNumberRepository.delete(email, contentId);
+    public void likeORdislike(String email, long contentId) {
+        if (findOne(email, contentId).isEmpty()) {
+            //해당 조건에 만족하는 좋아요가 없음 (좋아요 생성)
+            LikeNumber likeNumber = new LikeNumber();
+            //LikeNumber likeNumber;
+
+            likeNumber.setContentId(contentId);
+            likeNumber.setEmail(email);
+
+            create(likeNumber);
+        } else {
+            //해당 조건에 만족하는 좋아요가 있음 (좋아요 삭제)
+            likeNumberRepository.delete(email, contentId);
+        }
     }
 }

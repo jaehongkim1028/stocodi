@@ -22,19 +22,10 @@ public class LikeNumberController {
     }
 
     @GetMapping("/contents/like/{email}/{contentId}")
-    public void likeORdislike(@PathVariable String email, @PathVariable long contentId){
-        //List<LikeNumber> likeNumber = JpaLikeNumberRepository.findByEmailAndContentId(email, contentId);
+    public String GetRequest(@PathVariable String email, @PathVariable long contentId) {
+        likeNumberService.likeORdislike(email, contentId);
 
-//        if(JpaLikeNumberRepository.findByEmailAndContentId(email, contentId).isEmpty()){
-//            //해당 조건에 만족하는 좋아요가 없음 (좋아요 생성)
-//            LikeNumber newlikeNumber = new LikeNumber();
-//
-//            newlikeNumber.setContentId(contentId);
-//            newlikeNumber.setEmail(email);
-//        }
-//        else{
-//            //해당 조건에 만족하는 좋아요가 있음 (좋아요 삭제)
-//            likeNumberService.delete(email, contentId);
-//        }
+        return "redirect:/contents/" + contentId;
     }
+
 }
