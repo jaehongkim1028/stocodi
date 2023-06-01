@@ -24,7 +24,7 @@ public class JpaContentRepository implements ContentRepository{
     }
 
     @Override
-    public Optional<Content> findById(Long contentId){
+    public Optional<Content> findByContentId(Long contentId){
         Content content = em.find(Content.class, contentId);
         return Optional.ofNullable(content);
     }
@@ -37,7 +37,7 @@ public class JpaContentRepository implements ContentRepository{
 
     @Override
     public void delete(Long contentId){
-        Content content = findById(contentId).orElseThrow(()
+        Content content = findByContentId(contentId).orElseThrow(()
                 -> new EntityNotFoundException("Content not found"));
     }
 }

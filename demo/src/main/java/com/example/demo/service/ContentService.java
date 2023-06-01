@@ -32,12 +32,12 @@ public class ContentService {
 
     // ( - )
     public Optional<Content> findOne(Long contentId) {
-        return contentRepository.findById(contentId);
+        return contentRepository.findByContentId(contentId);
     }
 
     // 글 수정
     public Long update(Long contentId, Content content){
-        Content originalContent = contentRepository.findById(contentId).get();
+        Content originalContent = contentRepository.findByContentId(contentId).get();
         originalContent.setContent(content.getContent());
         originalContent.setTitle(content.getTitle());
         originalContent.setVideoLink(content.getVideoLink());

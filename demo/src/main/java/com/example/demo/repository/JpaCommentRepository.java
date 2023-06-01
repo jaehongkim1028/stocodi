@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class JpaCommentRepository implements CommentRepository{
@@ -27,6 +28,12 @@ public class JpaCommentRepository implements CommentRepository{
         return em.createQuery("select a from Comment a" +
                 "where a.contentId = :contentId", Comment.class)
                 .getResultList();
+    }
+
+    @Override
+    public Optional<Comment> findByCommentId(Long commentId) {
+        Comment comment = em.find(Comment.class, commentId);
+        return Optional.ofNullable(comment);
     }
 
     @Override
