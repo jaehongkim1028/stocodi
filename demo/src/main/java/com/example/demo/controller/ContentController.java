@@ -31,7 +31,7 @@ public class ContentController {
     @PostMapping("/contents/new")
     public String create(ContentForm form){
         Content content = new Content();
-        //content.setContentID();
+        content.setContentID(form.getContentID());
         //content.setEmail();
         content.setTitle(form.getTitle());
         content.setContent(form.getContent());

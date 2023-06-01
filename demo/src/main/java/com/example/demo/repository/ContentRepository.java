@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ContentRepository {
     Content save(Content content);
 
-    Optional<Content> findById(Long contentId);
+    List<Content> findByContentId(Long contentId);
     List<Content> findAll();
 
     void delete(Long contentId);
