@@ -1,13 +1,13 @@
 package com.example.demo.dto;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.*;
 import java.util.List;
 
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class UserRegisterDto {
     @NotEmpty
     @Email
@@ -22,7 +22,7 @@ public class UserRegisterDto {
     private String pwd;
 
     @NotEmpty
-    private String age;
+    private String birth;
 
     @NotEmpty
     private String phone;

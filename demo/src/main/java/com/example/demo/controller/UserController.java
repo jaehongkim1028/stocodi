@@ -1,50 +1,64 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.StringResponseDto;
 import com.example.demo.dto.UserLoginDto;
 import com.example.demo.dto.UserRegisterDto;
+import com.example.demo.exception.UserRegistrationException;
 import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+@CrossOrigin(origins = "http://localhost:3000")
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/users")
+//@RequestMapping("/api/users")
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @PostMapping("/api/users/register")
+    public ResponseEntity<StringResponseDto> registerUser(HttpServletResponse response, @Valid @RequestBody UserRegisterDto userDto) {
+        userService.register(userDto);
+        return ResponseEntity.ok(new StringResponseDto("Registration successful"));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@Valid UserRegisterDto userDto) {
-        String token = userService.register(userDto);
-        if (token != null) {
-            return ResponseEntity.ok(token);
-        } else {
-            return ResponseEntity.badRequest().body("Registration failed");
-        }
-    }
-
-    @GetMapping("/login")
-    public ResponseEntity<String> loginUser(@Valid UserLoginDto loginDto) {
+    @PostMapping("/api/users/login")
+    public ResponseEntity<StringResponseDto> loginUser(HttpServletResponse response, @Valid @RequestBody UserLoginDto loginDto) {
         String token = userService.login(loginDto);
+
         if (token != null) {
-            return ResponseEntity.ok(token);
+            Cookie tokenCookie = new Cookie("token", token);
+            tokenCookie.setMaxAge(3600);
+            response.addCookie(tokenCookie);
+            return ResponseEntity.ok(new StringResponseDto("Login successful"));
         } else {
-            return ResponseEntity.status(401).body("Login failed");
+            return ResponseEntity.status(401).body(new StringResponseDto("Login failed"));
         }
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<String> currentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authentication.getName();
-        System.out.println(userService.getUserListByEmail(currentUserName));
-        return ResponseEntity.ok(currentUserName);
+    @GetMapping("/api/users/me")
+    public ResponseEntity<StringResponseDto> currentUser(@CookieValue("token") String token){
+        //get User's name by JWT token
+        String currentUserName =  userService.getEmailFromToken(token);
+
+        return ResponseEntity.ok(new StringResponseDto(currentUserName));
+    }
+
+    // ======================================= Exception handling ==============================================
+    @ExceptionHandler(UserRegistrationException.class)
+    public ResponseEntity<StringResponseDto> handleUserRegistrationException(UserRegistrationException ex) {
+        String errorMessage = ex.getMessage();
+        return new ResponseEntity<>(new StringResponseDto(errorMessage), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<StringResponseDto> handleException(Exception ex) {
+        String errorMessage = "Internal Server Error. An error occurred.";
+        return new ResponseEntity<>(new StringResponseDto(errorMessage), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
