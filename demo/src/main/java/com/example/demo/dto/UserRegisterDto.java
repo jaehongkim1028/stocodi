@@ -2,11 +2,13 @@ package com.example.demo.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.*;
 import java.util.List;
 
 @Getter
+@Setter
 @RequiredArgsConstructor
 public class UserRegisterDto {
     @NotEmpty

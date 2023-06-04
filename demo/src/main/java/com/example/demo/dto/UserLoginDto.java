@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.validation.constraints.*;
 
 @Getter
+@Setter
 @RequiredArgsConstructor
 public class UserLoginDto {
     @NotEmpty
