@@ -1,5 +1,6 @@
 package com.example.demo.util;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +25,12 @@ public class JwtUtil {
     }
 
     public String extractSubject(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+        try {
+            return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+        } catch (JwtException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public boolean validateToken(String token) {

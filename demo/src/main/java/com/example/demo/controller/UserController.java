@@ -23,7 +23,10 @@ public class UserController {
 
     @PostMapping("/api/users/register")
     public ResponseEntity<StringResponseDto> registerUser(HttpServletResponse response, @Valid @RequestBody UserRegisterDto userDto) {
-        userService.register(userDto);
+        Boolean ret = userService.register(userDto);
+        if (!ret){
+            return ResponseEntity.badRequest().body(new StringResponseDto("User with the provided email already exists. Or invalid input"));
+        }
         return ResponseEntity.ok(new StringResponseDto("Registration successful"));
     }
 
@@ -45,17 +48,13 @@ public class UserController {
     public ResponseEntity<StringResponseDto> currentUser(@CookieValue("token") String token){
         //get User's name by JWT token
         String currentUserName =  userService.getEmailFromToken(token);
-
+        if (currentUserName == null) {
+            return ResponseEntity.status(401).body(new StringResponseDto("User not found. Or token is invalid"));
+        }
         return ResponseEntity.ok(new StringResponseDto(currentUserName));
     }
 
     // ======================================= Exception handling ==============================================
-    @ExceptionHandler(UserRegistrationException.class)
-    public ResponseEntity<StringResponseDto> handleUserRegistrationException(UserRegistrationException ex) {
-        String errorMessage = ex.getMessage();
-        return new ResponseEntity<>(new StringResponseDto(errorMessage), HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StringResponseDto> handleException(Exception ex) {
         String errorMessage = "Internal Server Error. An error occurred.";

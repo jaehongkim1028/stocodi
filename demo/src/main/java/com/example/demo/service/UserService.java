@@ -23,7 +23,7 @@ public class UserService {
         this.jwtUtil = jwtUtil;
     }
 
-    public void register(UserRegisterDto userDto) {
+    public Boolean register(UserRegisterDto userDto) {
         String encodedPassword = encryptionService.encode(userDto.getPwd());
 
         User user = User.builder()
@@ -38,14 +38,14 @@ public class UserService {
 
         User existingUser = userRepository.findByEmail(userDto.getEmail());
         if (existingUser != null) {
-            throw new UserRegistrationException("User with the provided email already exists.");
+            return false;
         }
-
         try {
             userRepository.save(user);
         } catch (Exception e) {
-            throw new UserRegistrationException("Failed to register user : " + e);
+            return false;
         }
+        return true;
     }
 
 
