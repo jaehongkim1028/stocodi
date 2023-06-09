@@ -1,6 +1,8 @@
 package com.example.demo.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table (name = "Content")
@@ -12,27 +14,25 @@ public class Content {
     private String email;
     private String title;
     private Integer likeCount;
-    private String videoLink;
+    private String youtubeId;
+    private String thumbnailUrl;
     private String writer;
     private String content;
-    private Integer hashtag;
-    //private Integer scrapCount;
-    //private String storePlace;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<Integer> hashtags = new ArrayList<Integer>();
 
-    //public Content(Long contentID, String email, String title, Integer likeCount, Integer scrapCount, String storePlace) {
-    public Content(Long contentId, String email, String title, Integer likeCount,
-                   String videoLink, String writer, String content, Integer hashtag) {
-        this.contentId = contentId;
-        this.email = email;
-        this.title = title;
-        this.likeCount = likeCount;
-        this.videoLink = videoLink;
-        this.writer = writer;
-        this.content = content;
-        this.hashtag = hashtag;
-        //this.scrapCount = scrapCount;
-        //this.storePlace = storePlace;
-    }
+public Content(Long contentId, String email, String title, Integer likeCount, String thumbnailUrl,
+               String videoLink, String writer, String content, List<Integer> hashtags) {
+    this.contentId = contentId;
+    this.email = email;
+    this.title = title;
+    this.likeCount = likeCount;
+    this.youtubeId = videoLink;
+    this.writer = writer;
+    this.content = content;
+    this.hashtags = hashtags;
+    this.thumbnailUrl = thumbnailUrl;
+}
 
     public Content() { }
 
@@ -52,16 +52,20 @@ public class Content {
         return likeCount;
     }
 
-    public String getVideoLink() {
-        return videoLink;
+    public String getYoutubeId() {
+        return youtubeId;
     }
 
-    public void setVideoLink(String videoLink) {
-        this.videoLink = videoLink;
+    public void setYoutubeId(String videoLink) {
+        this.youtubeId = videoLink;
     }
 
     public String getWriter() {
         return writer;
+    }
+
+    public void setContentId(Long contentId) {
+        this.contentId = contentId;
     }
 
     public void setWriter(String writer) {
@@ -76,21 +80,14 @@ public class Content {
         this.content = content;
     }
 
-    public Integer getHashtag() {
-        return hashtag;
+
+    public List<Integer> getHashtags() {
+        return hashtags;
     }
 
-    public void setHashtag(Integer hashtag) {
-        this.hashtag = hashtag;
+    public void setHashtags(List<Integer> hashtags) {
+        this.hashtags = hashtags;
     }
-
-    //    public Integer getScrapCount() {
-//        return scrapCount;
-//    }
-//
-//    public String getStorePlace() {
-//        return storePlace;
-//    }
 
     public void setContentID(Long contentID) {
         this.contentId = contentId;
@@ -108,11 +105,11 @@ public class Content {
         this.likeCount = likeCount;
     }
 
-//    public void setScrapCount(Integer scrapCount) {
-//        this.scrapCount = scrapCount;
-//    }
-//
-//    public void setStorePlace(String storePlace) {
-//        this.storePlace = storePlace;
-//    }
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
 }

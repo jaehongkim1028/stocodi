@@ -1,19 +1,23 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.Content;
-import com.example.demo.domain.LikeNumber;
 import com.example.demo.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:3000")
 public class ContentController {
 
     private final ContentService contentService;
@@ -25,35 +29,62 @@ public class ContentController {
 
     @GetMapping("/contents/new")
     public String createForm(){
-        return "contents/createContentForm";
+        return "/";
     }
 
     @PostMapping("/contents/new")
-    public String create(ContentForm form){
+    @ResponseBody
+    public ResponseEntity<String> create(RequestEntity<ContentForm> requestEntity) {
+        ContentForm form = requestEntity.getBody();
+
         Content content = new Content();
         content.setContentID(form.getContentID());
         //content.setEmail();
         content.setTitle(form.getTitle());
         content.setContent(form.getContent());
-        content.setHashtag(form.getHashtag());
+        content.setHashtags(form.getHashtags());
         content.setWriter(form.getWriter());
-        content.setVideoLink(form.getVideoLink());
+        content.setYoutubeId(form.getYoutubeId());
+        content.setThumbnailUrl(form.getThumbnailUrl());
         content.setLikeCount(0);
-        //content.setScrapCount();
-        //content.setStorePlace();
 
         contentService.create(content);
 
-        return "redirect:/";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(UriComponentsBuilder.fromPath("/").build().toUri());
+
+        return null;
     }
 
     @GetMapping("/contents")
-    public String list(Model model){
+    public ResponseEntity<List<Content>> list() {
         List<Content> contents = contentService.findContents();
-        model.addAttribute("contents", contents);
-
-        return "contents/contentList";
+        return ResponseEntity.ok(contents);
     }
+
+    @GetMapping("/")
+    public ResponseEntity<List<Content>> findThree() {
+        List<Content> contents = new ArrayList<>();
+
+        Optional<Content> content1 = contentService.findOne(1L);
+        Optional<Content> content2 = contentService.findOne(2L);
+        Optional<Content> content3 = contentService.findOne(3L);
+
+        if (content1.isPresent()) {
+            contents.add(content1.get());
+        }
+
+        if (content2.isPresent()) {
+            contents.add(content2.get());
+        }
+
+        if (content3.isPresent()) {
+            contents.add(content3.get());
+        }
+
+        return ResponseEntity.ok(contents);
+    }
+
 
     // Content 상세 페이지
     @GetMapping("/contents/{ContentId}")
@@ -65,7 +96,7 @@ public class ContentController {
 
     // Content 수정
     @GetMapping("/Contents/update/{contentId}")
-    public String updateForm(@PathVariable Long contentId, Model model){
+    public String updateForm(@RequestParam @PathVariable Long contentId, Model model){
         Content content = contentService.findOne(contentId).get();
         model.addAttribute("content", content);
 

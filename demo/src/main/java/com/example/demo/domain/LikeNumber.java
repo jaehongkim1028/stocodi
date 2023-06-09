@@ -6,6 +6,7 @@ import javax.persistence.*;
 public class LikeNumber {
     @Id
     @Column(name = "LIKENUMBER_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long likeNumberId;
 
     @Column(name = "EMAIL")

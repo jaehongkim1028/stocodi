@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.controller.ContentForm;
 import com.example.demo.domain.Content;
 import com.example.demo.repository.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,8 @@ public class ContentService {
         Content originalContent = contentRepository.findByContentId(contentId).get();
         originalContent.setContent(content.getContent());
         originalContent.setTitle(content.getTitle());
-        originalContent.setVideoLink(content.getVideoLink());
-        originalContent.setHashtag(content.getHashtag());
+        originalContent.setYoutubeId(content.getYoutubeId());
+        originalContent.setHashtags(content.getHashtags());
 
         return content.getContentId();
     }

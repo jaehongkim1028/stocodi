@@ -1,14 +1,19 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ContentForm {
     private Long contentID;
     private String email;
     private String title;
     private Integer likeCount;
-    private String videoLink;
+    private String YoutubeId;
+    private String thumbnailUrl;
     private String writer;
     private String content;
-    private Integer hashtag;
+//    private Integer hashtag;
+    private List<Integer> hashtags = new ArrayList<Integer>();
     //private Integer scrapCount;
     //private String storePlace;
 
@@ -44,12 +49,12 @@ public class ContentForm {
         this.likeCount = likeCount;
     }
 
-    public String getVideoLink() {
-        return videoLink;
+    public String getYoutubeId() {
+        return YoutubeId;
     }
 
-    public void setVideoLink(String videoLink) {
-        this.videoLink = videoLink;
+    public void setYoutubeId(String YoutubeId) {
+        this.YoutubeId = YoutubeId;
     }
 
     public String getWriter() {
@@ -68,13 +73,29 @@ public class ContentForm {
         this.content = content;
     }
 
-    public Integer getHashtag() {
-        return hashtag;
+    public List<Integer> getHashtags() {
+        return hashtags;
     }
 
-    public void setHashtag(Integer hashtag) {
-        this.hashtag = hashtag;
+    public void setHashtags(List<Integer> hashtags) {
+        this.hashtags = hashtags;
     }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    //    public Integer getHashtag() {
+//        return hashtag;
+//    }
+//
+//    public void setHashtag(Integer hashtag) {
+//        this.hashtag = hashtag;
+//    }
 
     //    public Integer getScrapCount() {
 //        return scrapCount;
