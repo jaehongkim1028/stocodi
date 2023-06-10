@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.HoldingStock;
 import com.example.demo.domain.Portfolio;
 import com.example.demo.repository.PortfolioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -42,5 +44,18 @@ public class PortfolioService {
     public void delete(Long id) {
         portfolioRepository.delete(id);
     }
+
+    // Portfolio에서 StockList 가져오기
+    public List<HoldingStock> getHoldingStocksByPortfolioName(String portfolioName) {
+        Portfolio portfolio = portfolioRepository.findByPortfolioName(portfolioName);
+        if (portfolio == null) {
+            throw new NoSuchElementException("Portfolio not found");
+        }
+        return portfolio.getHoldingStocks();
+    }
+
+
+
+
 
 }

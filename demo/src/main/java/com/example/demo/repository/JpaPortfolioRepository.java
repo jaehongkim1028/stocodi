@@ -1,10 +1,13 @@
 package com.example.demo.repository;
 
+import com.example.demo.domain.HoldingStock;
 import com.example.demo.domain.Portfolio;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,4 +62,24 @@ public class JpaPortfolioRepository implements PortfolioRepository{
             return result;
 
     }
+
+    @Override
+    public Portfolio findByPortfolioName(String portfolioName) {
+        String query = "SELECT p FROM Portfolio p WHERE p.portfolioName = :portfolioName";
+        TypedQuery<Portfolio> typedQuery = em.createQuery(query, Portfolio.class);
+        typedQuery.setParameter("portfolioName", portfolioName);
+
+        return typedQuery.getSingleResult();
+    }
+
+    @PersistenceContext
+    public List<HoldingStock> findHoldingStocks(Portfolio portfolio) {
+        String query = "SELECT h FROM HoldingStock h WHERE h.portfolio = :portfolio";
+        TypedQuery<HoldingStock> typedQuery = em.createQuery(query, HoldingStock.class);
+        typedQuery.setParameter("portfolio", portfolio);
+
+        return typedQuery.getResultList();
+    }
+
+
 }

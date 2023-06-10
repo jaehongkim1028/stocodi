@@ -22,6 +22,7 @@ public interface PortfolioRepository {
     List<Portfolio> findAll();
 
 
+    Portfolio findByPortfolioName(String portfolioName);
 }
 
 

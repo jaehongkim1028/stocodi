@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.HoldingStock;
 import com.example.demo.domain.Portfolio;
 import com.example.demo.service.PortfolioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,19 +45,25 @@ public class PortforlioController {
         return "redirect:/";
     }
 
-     // 조회
+     // Portfolio 조회
     @GetMapping("/portfolios/items")
     public String list(Model model) {
         List<Portfolio> portfolios = portfolioService.findPortfolios();
         model.addAttribute("portfolios",portfolios);
         return ("portfolios/portfolioList");
         //return "portfolios/createPortfolioForm";
-
     }
 
-    // 삭제
-    @GetMapping("/articles/delete/{id}")
+    // Portfolio 삭제 // id를 Name으로 선택해서 수정해야함.
+    @GetMapping("/portfolios/delete/{id}")
     public String delete(@PathVariable Long id) {
         portfolioService.delete(id);
         return "redirect:/"; }
+
+    // Portfolio에서 StockList 가져오기
+    @GetMapping(value = "/{portfolioName}/holdingstocks", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<HoldingStock>> getHoldingStocksByPortfolioName(@PathVariable String portfolioName) {
+        List<HoldingStock> holdingStocks = portfolioService.getHoldingStocksByPortfolioName(portfolioName);
+        return ResponseEntity.ok(holdingStocks);
+    }
 }

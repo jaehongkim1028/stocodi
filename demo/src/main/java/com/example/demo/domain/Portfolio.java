@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,9 +34,22 @@ public class Portfolio {
         @Column(nullable = false)
         private String portfolioName;
 
-
 //        public String getName() {
 //                return portfolioName;
 //        } Getter 사용
+
+        @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
+        private List<HoldingStock> holdingStocks = new ArrayList<>();
+
+        public void addHoldingStock(HoldingStock holdingStock) {
+                holdingStock.setPortfolio(this);
+                holdingStocks.add(holdingStock);
+        }
+
+        public void removeHoldingStock(HoldingStock holdingStock) {
+                holdingStock.setPortfolio(null);
+                holdingStocks.remove(holdingStock);
+        }
+
 
 }
