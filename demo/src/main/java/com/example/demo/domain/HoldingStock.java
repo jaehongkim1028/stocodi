@@ -22,6 +22,8 @@ public class HoldingStock extends BaseTimeEntity {
     // id 에서 name으로 변경
     @Column(name = "PORTFOLIO_NAME")
     private String portfolioName;
+    @Column(name = "PORTFOLIO_ID")
+    private Long portfolioId;
 
     @Column(nullable = false)
     private Integer averagePrice;
@@ -37,4 +39,16 @@ public class HoldingStock extends BaseTimeEntity {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
+    // Builder를 통한 초기화
+    @Builder
+    public HoldingStock(Long stockId, Long portfolioId, Integer averagePrice, Integer holdingAccount, Integer totalPrice) {
+        this.stockId = stockId;
+        this.portfolioId = portfolioId;
+        this.averagePrice = averagePrice;
+        this.holdingAccount = holdingAccount;
+        this.totalPrice = totalPrice;
+    }
+
+    public void update() {
+    }
 }

@@ -14,42 +14,31 @@ import java.util.List;
 @Entity
 public class Portfolio {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long portfolioId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long portfolioId;
 
-        @Column(name = "EMAIL")
-        private String email;
+    @Column(name = "EMAIL")
+    private String email;
 
-        @Column(nullable = false)
-        private Integer initialCash;
+    @Column(nullable = false)
+    private Integer initialCash;
 
-        @Column(nullable = false)
-        private Integer currentCash;
+    @Column(nullable = false)
+    private Integer currentCash;
 
-        @Column(nullable = false)
-        private Integer totalAsset;
+    @Column(nullable = false)
+    private Integer totalAsset;
 
-        // 칼럼 추가 필요
-        @Column(nullable = false)
-        private String portfolioName;
+    // 칼럼 추가 필요
+    @Column(nullable = false)
+    private String portfolioName;
 
 //        public String getName() {
 //                return portfolioName;
 //        } Getter 사용
 
-        @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
-        private List<HoldingStock> holdingStocks = new ArrayList<>();
-
-        public void addHoldingStock(HoldingStock holdingStock) {
-                holdingStock.setPortfolio(this);
-                holdingStocks.add(holdingStock);
-        }
-
-        public void removeHoldingStock(HoldingStock holdingStock) {
-                holdingStock.setPortfolio(null);
-                holdingStocks.remove(holdingStock);
-        }
-
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HoldingStock> holdingStocks = new ArrayList<>();
 
 }
