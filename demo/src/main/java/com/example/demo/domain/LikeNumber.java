@@ -9,12 +9,6 @@ public class LikeNumber {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long likeNumberId;
 
-    @Column(name = "EMAIL")
-    private String email;
-
-    @Column(name = "CONTENT_ID")
-    private Long contentId;
-
     public long getLikeNumberId() {
         return likeNumberId;
     }
@@ -37,5 +31,6 @@ public class LikeNumber {
 
     public void setContentId(Long contentId) {
         this.contentId = contentId;
+
     }
 }
