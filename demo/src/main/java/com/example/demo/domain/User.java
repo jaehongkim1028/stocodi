@@ -53,7 +53,12 @@ public class User extends BaseTimeEntity {
     }
 
     // update를 통한 수정.
-    public void update() {
+    public void updateUser(String name, String pwd, String birth, String phone, String nickname, List<Integer> interest) {
+        this.name = name;
+        this.pwd = pwd;
+        this.birth = birth;
+        this.phone = phone;
+        this.nickname = nickname;
+        this.interest = interest;
     }
-
 }
