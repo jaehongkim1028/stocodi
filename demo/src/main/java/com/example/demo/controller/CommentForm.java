@@ -1,29 +1,10 @@
-package com.example.demo.domain;
+package com.example.demo.controller;
 
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-public class Comment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CommentForm {
     private Long commentId;
     private Long contentId;
     private String email;
     private String comment;
-
-    public Comment(){
-    }
-
-    public Comment(Long commentId, Long contentId, String email, String comment) {
-        this.commentId = commentId;
-        this.contentId = contentId;
-        this.email = email;
-        this.comment = comment;
-    }
 
     public Long getCommentId() {
         return commentId;
