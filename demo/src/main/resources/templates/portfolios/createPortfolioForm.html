@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="<http://www.thymeleaf.org>">
+<head> <meta charset="UTF-8">
+  <title>createArticle</title>
+</head> <body> <div class="container">
+  <form action="/portfolios/new" method="post">
+
+    <div class="form-group">
+      <label for="title">포트폴리오 이름</label>
+      <input type="text" id="title" name="portfolioName" placeholder="포트폴리오 이름을 입력하세요">
+      <br>
+      <label for="content">자금</label>
+      <textarea id="content" name="initialPrice" placeholder="자금"></textarea>
+      <br>
+    </div>
+
+    <button type="submit">포트폴리오 생성하기</button>
+  </form>
+</div>
+</body>
+</html>

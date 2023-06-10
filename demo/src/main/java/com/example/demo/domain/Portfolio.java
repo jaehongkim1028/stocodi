@@ -1,15 +1,19 @@
 package com.example.demo.domain;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
-public class Portfolio extends BaseTimeEntity {
+public class Portfolio {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long portfolioId;
@@ -26,14 +30,15 @@ public class Portfolio extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer totalAsset;
 
-    @Builder
-    public Portfolio(String email, Integer initialCash, Integer currentCash, Integer totalAsset) {
-        this.email = email;
-        this.initialCash = initialCash;
-        this.currentCash = currentCash;
-        this.totalAsset = totalAsset;
-    }
+    // 칼럼 추가 필요
+    @Column(nullable = false)
+    private String portfolioName;
 
-    public void update() {
-    }
+//        public String getName() {
+//                return portfolioName;
+//        } Getter 사용
+
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HoldingStock> holdingStocks = new ArrayList<>();
+
 }
