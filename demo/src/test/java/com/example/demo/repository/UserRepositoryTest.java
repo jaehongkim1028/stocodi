@@ -40,27 +40,31 @@ public class UserRepositoryTest {
                 .pwd("password")
                 .interest(List.of(1, 2, 3))
                 .build();
-
+        // When
         userRepository.save(user);
-
+        // Then
         Assertions.assertThat(user.getEmail()).isEqualTo("test@example.com");
     }
 
     @Test
     @Order(2)
     public void getUserTest(){
-
+        // Given
         User user = userRepository.findByEmail("test@example.com");
 
+        // When
+        // Then
         Assertions.assertThat(user.getEmail()).isEqualTo("test@example.com");
     }
 
     @Test
     @Order(3)
     public void getListOfUsersTest(){
-
+        // Given
         List<User> users = userRepository.findAll();
 
+        // When
+        // Then
         Assertions.assertThat(users.size()).isGreaterThan(0);
     }
 
@@ -68,13 +72,14 @@ public class UserRepositoryTest {
     @Order(4)
     @Rollback(value = false)
     public void updateUserTest(){
-
+        // Given
         User user = userRepository.findByEmail("test@example.com");
 
+        // When
         user.updateUser("updateUserName", user.getPwd(), user.getBirth(), user.getPhone(), user.getNickname(), user.getInterest());
-
         User userUpdated =  userRepository.save(user);
 
+        // Then
         Assertions.assertThat(userUpdated.getName()).isEqualTo("updateUserName");
 
     }
@@ -83,13 +88,12 @@ public class UserRepositoryTest {
     @Order(5)
     @Rollback(value = false)
     public void deleteEmployeeTest(){
-
+        // Given
         User user = userRepository.findByEmail("test@example.com");
-
+        // When
         userRepository.delete(user);
-
         User userResult = userRepository.findByEmail("ram@gmail.com");
-
+        // Then
         Assertions.assertThat(userResult).isNull();
     }
 
