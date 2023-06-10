@@ -57,7 +57,6 @@ public class UserController {
     // ======================================= Exception handling ==============================================
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StringResponseDto> handleException(Exception ex) {
-        String errorMessage = "Internal Server Error. An error occurred.";
-        return new ResponseEntity<>(new StringResponseDto(errorMessage), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new StringResponseDto(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

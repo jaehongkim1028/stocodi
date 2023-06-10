@@ -1,10 +1,16 @@
 package com.example.demo.dto;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@RequiredArgsConstructor
+@Setter
+@NoArgsConstructor
 public class StringResponseDto {
-    private final String message;
+    private String message;
+
+    public StringResponseDto(String message) {
+        this.message = message;
+    }
 }

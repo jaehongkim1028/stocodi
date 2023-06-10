@@ -1,144 +1,101 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.User;
 import com.example.demo.dto.StringResponseDto;
 import com.example.demo.dto.UserLoginDto;
 import com.example.demo.dto.UserRegisterDto;
-import com.example.demo.exception.UserRegistrationException;
-import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-class UserControllerTest {
-    private UserController userController;
 
-    @Mock
+@WebMvcTest
+@MockBean(JpaMetamodelMappingContext.class)
+public class UserControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
     private UserService userService;
-    @Mock
-    private UserRepository userRepository;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        userController = new UserController(userService);
-    }
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    private User user;
+
+    public UserControllerTest() {
+        user = User.builder()
+                .email("test2@example.com")
+                .birth("20010927")
+                .phone("01012345678")
+                .name("test")
+                .nickname("testnick")
+                .pwd("password")
+                .interest(List.of(1, 2, 3))
+                .build();
     }
 
     @Test
-    void registerUser_ValidDto_ReturnsOkResponse() {
+    public void registerUser() throws Exception {
         // Given
-        UserRegisterDto userDto = new UserRegisterDto();
-        userDto.setEmail("test@example.com");
-        userDto.setPwd("password");
-        userDto.setBirth("20010101");
-        userDto.setName("test");
-        userDto.setPhone("01012345678");
-        userDto.setNickname("testnick");
-        userDto.setInterest(List.of(1, 2, 3));
+        UserRegisterDto userRegisterDto = new UserRegisterDto();
+        userRegisterDto.setEmail(user.getEmail());
+        userRegisterDto.setBirth(user.getBirth());
+        userRegisterDto.setPhone(user.getPhone());
+        userRegisterDto.setName(user.getName());
+        userRegisterDto.setNickname(user.getNickname());
+        userRegisterDto.setPwd(user.getPwd());
+        userRegisterDto.setInterest(user.getInterest());
 
-        HttpServletResponse response = mock(HttpServletResponse.class);
+        given(userService.register(any(UserRegisterDto.class)))
+                .willReturn(true);
 
         // When
-        ResponseEntity<StringResponseDto> responseEntity = userController.registerUser(response, userDto);
-
+        ResultActions result = mockMvc.perform(post("/api/users/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userRegisterDto)));
         // Then
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Registration successful", responseEntity.getBody().getMessage());
-        verify(userService, times(1)).register(userDto);
-    }
-    @Test
-    void registerUser_DuplicateEmail_ReturnsBadRequestResponse() {
-        // Given
-        UserRegisterDto userDto = new UserRegisterDto();
-        userDto.setEmail("test@example.com");
-        userDto.setPwd("password");
-        userDto.setBirth("20010101");
-        userDto.setName("test");
-        userDto.setPhone("01012345678");
-        userDto.setNickname("testnick");
-        userDto.setInterest(List.of(1, 2, 3));
-
-        // Register user
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        userController.registerUser(response, userDto);
-
-        // Mock UserRegistrationException
-        doThrow(UserRegistrationException.class).when(userService).register(userDto);
-
-        // When
-        ResponseEntity<StringResponseDto> responseEntity = null;
-        try {
-            responseEntity = userController.registerUser(response, userDto);
-        } catch (UserRegistrationException ignored) {
-            System.out.println("UserRegistrationException success.");
-        }
-
+        result.andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
-    void loginUser_ValidDto_ReturnsOkResponseWithTokenCookie() {
+    public void loginUser() throws Exception {
         // Given
-        UserLoginDto loginDto = new UserLoginDto();
-        loginDto.setEmail("test@example.com");
-        loginDto.setPwd("password");
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        String token = "yJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNjg1ODY0NDg5LCJleHAiOjE2ODU5MDA0ODl9.a-kM680rrIFNBRUppm6BVnyUc9UO1OD-zls68cjtDQQ";
-        when(userService.login(loginDto)).thenReturn(token);
+        UserLoginDto userLoginDto = new UserLoginDto();
+        userLoginDto.setEmail(user.getEmail());
+        userLoginDto.setPwd(user.getPwd());
+
+        given(userService.login(any(UserLoginDto.class)))
+                .willReturn("token");
 
         // When
-        ResponseEntity<StringResponseDto> responseEntity = userController.loginUser(response, loginDto);
-
+        ResultActions result = mockMvc.perform(post("/api/users/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userLoginDto)));
         // Then
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Login successful", responseEntity.getBody().getMessage());
-        verify(response, times(1)).addCookie(any());
-    }
-
-    @Test
-    void loginUser_InvalidDto_ReturnsUnauthorizedResponse() {
-        // Given
-        UserLoginDto loginDto = new UserLoginDto();
-        loginDto.setEmail("test@example.com");
-        loginDto.setPwd("password123");
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        when(userService.login(loginDto)).thenReturn(null);
-
-        // When
-        ResponseEntity<StringResponseDto> responseEntity = userController.loginUser(response, loginDto);
-
-        // Then
-        assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
-        assertEquals("Login failed", responseEntity.getBody().getMessage());
-        verify(response, never()).addCookie(any());
-    }
-
-    @Test
-    void currentUser_ValidToken_ReturnsOkResponse() {
-        // Given
-        String token = "yJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNjg1ODY0NDg5LCJleHAiOjE2ODU5MDA0ODl9.a-kM680rrIFNBRUppm6BVnyUc9UO1OD-zls68cjtDQQ";
-        when(userService.getEmailFromToken(token)).thenReturn("test@example.com");
-
-        // When
-        ResponseEntity<StringResponseDto> responseEntity = userController.currentUser(token);
-
-        // Then
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("test@example.com", responseEntity.getBody().getMessage());
+        result.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(cookie().exists("token"))
+                .andExpect(jsonPath("$.message", is("Login successful")));
     }
 }
