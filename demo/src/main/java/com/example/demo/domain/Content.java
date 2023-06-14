@@ -1,47 +1,115 @@
 package com.example.demo.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
-@NoArgsConstructor
 @Entity
-public class Content extends BaseTimeEntity {
+@Table (name = "Content")
+public class Content {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CONTENT_ID")
     private Long contentId;
-
-    @Column(name = "EMAIL", length = 500, nullable = false)
     private String email;
-
-    @Column(length = 32, nullable = false)
     private String title;
-
-    @Column(nullable = false)
     private Integer likeCount;
+    private String youtubeId;
+    private String thumbnailUrl;
+    private String writer;
+    private String content;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<Integer> hashtags = new ArrayList<Integer>();
 
-    @Column(nullable = false)
-    private Integer scrapCount;
+public Content(Long contentId, String email, String title, Integer likeCount, String thumbnailUrl,
+               String videoLink, String writer, String content, List<Integer> hashtags) {
+    this.contentId = contentId;
+    this.email = email;
+    this.title = title;
+    this.likeCount = likeCount;
+    this.youtubeId = videoLink;
+    this.writer = writer;
+    this.content = content;
+    this.hashtags = hashtags;
+    this.thumbnailUrl = thumbnailUrl;
+}
 
-    @Column(length = 500, nullable = false)
-    private String storePlace;
+    public Content() { }
 
-    // Builder를 통한 초기화
-    @Builder
-    public Content(String email, String title, Integer likeCount, Integer scrapCount, String storePlace) {
+    public Long getContentId() {
+        return contentId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+
+    public String getYoutubeId() {
+        return youtubeId;
+    }
+
+    public void setYoutubeId(String videoLink) {
+        this.youtubeId = videoLink;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setContentId(Long contentId) {
+        this.contentId = contentId;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+
+    public List<Integer> getHashtags() {
+        return hashtags;
+    }
+
+    public void setHashtags(List<Integer> hashtags) {
+        this.hashtags = hashtags;
+    }
+
+    public void setContentID(Long contentID) {
+        this.contentId = contentId;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setLikeCount(Integer likeCount) {
         this.likeCount = likeCount;
-        this.scrapCount = scrapCount;
-        this.storePlace = storePlace;
     }
 
-    // update를 통한 수정
-    public void update() {
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
     }
 
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
 }
