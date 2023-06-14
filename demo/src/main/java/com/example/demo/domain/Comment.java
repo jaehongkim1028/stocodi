@@ -1,34 +1,58 @@
 package com.example.demo.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-import javax.persistence.*;
-
-@Getter
-@NoArgsConstructor
 @Entity
-public class Comment extends BaseTimeEntity {
-
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
-
-    @Column(name = "EMAIL")
-    private String email;
-
-    @Column(name = "CONTENT_ID")
     private Long contentId;
+    private String email;
+    private String comment;
 
-    @Column(length = 500, nullable = false)
-    private String commentContent;
+    public Comment(){
+    }
 
-    // Builder를 통한 초기화
-    @Builder
-    public Comment(String email, Long contentId, String commentContent) {
-        this.email = email;
+    public Comment(Long commentId, Long contentId, String email, String comment) {
+        this.commentId = commentId;
         this.contentId = contentId;
-        this.commentContent = commentContent;
+        this.email = email;
+        this.comment = comment;
+    }
+
+    public Long getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
+    }
+
+    public Long getContentId() {
+        return contentId;
+    }
+
+    public void setContentId(Long contentId) {
+        this.contentId = contentId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }
