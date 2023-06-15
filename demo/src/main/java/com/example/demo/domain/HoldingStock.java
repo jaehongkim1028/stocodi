@@ -3,13 +3,15 @@ package com.example.demo.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class HoldingStock extends BaseTimeEntity {
+@Setter
+public class HoldingStock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long holdingStockId;
@@ -17,26 +19,48 @@ public class HoldingStock extends BaseTimeEntity {
     @Column(name = "STOCK_ID")
     private Long stockId;
 
-    @Column(name = "PORTFOLIO_ID")
-    private Long portfolioId;
+    // Change Type, Add Connection
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "PORTFOLIO_ID")
+    private Portfolio portfolio;
 
     @Column(nullable = false)
     private Integer averagePrice;
 
+    // Edit
     @Column(nullable = false)
-    private Integer holdingAccount;
+    private Integer holdingCount;
 
     @Column(nullable = false)
     private Integer totalPrice;
 
+    // Entity Conncetion Method
+    // HoldingStock <-> Portfolio
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
+        portfolio.getHoldingStockList().add(this);
+    }
+
+
     // Builder를 통한 초기화
     @Builder
-    public HoldingStock(Long stockId, Long portfolioId, Integer averagePrice, Integer holdingAccount, Integer totalPrice) {
+    public HoldingStock(Long stockId, Portfolio portfolio, Integer averagePrice, Integer holdingCount, Integer totalPrice) {
         this.stockId = stockId;
-        this.portfolioId = portfolioId;
+        this.portfolio = portfolio;
         this.averagePrice = averagePrice;
-        this.holdingAccount = holdingAccount;
+        this.holdingCount = holdingCount;
         this.totalPrice = totalPrice;
+    }
+
+    // Bussiness Logic
+    public void addStockCount(int count) {
+        this.holdingCount += count;
+    }
+
+    public void subStockCount(int count) {
+        int restCount = this.holdingCount - count;
+
+        this.holdingCount = restCount;
     }
 
     public void update() {
