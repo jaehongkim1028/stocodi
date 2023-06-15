@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.StockResponseDto;
 import com.example.demo.dto.StockResponseDto.ResponseDto.BodyDto.ItemsDto.ItemDto;
+import com.example.demo.service.StockApiService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/stock")
 public class StockApiController {
-    //private final StockService stockService;
+    private final StockApiService stockApiService;
 
     @Value("${stock.api.key}")
     private String stockApiKey;
@@ -35,39 +38,32 @@ public class StockApiController {
 
     @GetMapping("/update")
     public String updateStock() throws JsonProcessingException {
-        String reqUrl = UriComponentsBuilder.fromUriString(stockApiUrl)
-                .queryParam("resultType", "json")
-                .queryParam("numOfRows", 10000)
-                .queryParam("mrktCls", "KOSPI")
-                .queryParam("pageNo", 1)
-                .queryParam("beginBasDt", "20230525")
-                .queryParam("serviceKey", stockApiKey)
-                .toUriString();
+        LocalDate date = LocalDate.parse("20230401", DateTimeFormatter.ofPattern("yyyyMMdd"));
+           String sdate = date.toString().replaceAll("-", "");
 
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        // date를 80일까지 증가시킴
+        for (int i = 0; i < 80; i++) {
+            String reqUrl = UriComponentsBuilder.fromUriString(stockApiUrl)
+                    .queryParam("numOfRows", 10000)
+                    .queryParam("mrktCls", "KOSPI")
+                    .queryParam("pageNo", 1)
+                    .queryParam("beginBasDt", sdate)
+                    .queryParam("serviceKey", stockApiKey)
+                    .queryParam("resultType", "json")
+                    .toUriString();
 
-        StockResponseDto responseDto = restTemplate.getForObject(reqUrl, StockResponseDto.class);
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-        assert responseDto != null;
-        List<ItemDto> items = responseDto.getResponse().getBody().getItems().getItem();
-//        for (ItemDto item : items) {
-//            System.out.println(item.getBasDt());
-//            System.out.println(item.getSrtnCd());
-//            System.out.println(item.getIsinCd());
-//            System.out.println(item.getItmsNm());
-//            System.out.println(item.getMrktCtg());
-//            System.out.println(item.getClpr());
-//            System.out.println(item.getVs());
-//            System.out.println(item.getFltRt());
-//            System.out.println(item.getMkp());
-//            System.out.println(item.getHipr());
-//            System.out.println(item.getLopr());
-//            System.out.println(item.getTrqu());
-//            System.out.println(item.getTrPrc());
-//            System.out.println(item.getLstgStCnt());
-//            System.out.println(item.getMrktTotAmt());
-//        }
+            StockResponseDto responseDto = restTemplate.getForObject(reqUrl, StockResponseDto.class);
+
+            assert responseDto != null;
+            List<ItemDto> items = responseDto.getResponse().getBody().getItems().getItem();
+            stockApiService.saveItems(items, sdate);
+
+            date = date.plusDays(1);
+            sdate = date.toString().replaceAll("-", "");
+        }
 
         return "success";
     }
