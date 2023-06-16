@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 
+import com.example.demo.domain.HoldingStock;
+import com.example.demo.domain.Portfolio;
 import com.example.demo.dto.HoldingStockDto;
 import com.example.demo.repository.HoldingStockRepository;
 import com.example.demo.repository.PortfolioRepository;

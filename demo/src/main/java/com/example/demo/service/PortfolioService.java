@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.Dto.HoldingStockDto;
-import com.example.demo.Dto.PortfolioDto;
-import com.example.demo.Dto.PortfolioMapper;
+import com.example.demo.domain.HoldingStock;
+import com.example.demo.domain.Portfolio;
+import com.example.demo.dto.HoldingStockDto;
+import com.example.demo.dto.PortfolioDto;
+import com.example.demo.dto.PortfolioMapper;
 import com.example.demo.repository.PortfolioRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

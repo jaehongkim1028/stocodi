@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.domain.HoldingStock;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

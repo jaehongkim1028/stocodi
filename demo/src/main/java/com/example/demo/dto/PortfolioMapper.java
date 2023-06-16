@@ -1,5 +1,7 @@
 package com.example.demo.dto;
 
+import com.example.demo.domain.Portfolio;
+
 public class PortfolioMapper {
     public static PortfolioDto mapToDto(Portfolio portfolio) {
         PortfolioDto portfolioDto = new PortfolioDto();
